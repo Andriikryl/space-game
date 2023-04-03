@@ -18,15 +18,24 @@ class Player {
 
     const image = new Image();
     image.src = "./assets/spaceship.png";
-
-    this.image = image;
-    this.width = 100;
-    this.height = 100;
+    image.onload = () => {
+      this.image = image;
+      this.width = image.width * 0.15;
+      this.height = image.height * 0.15;
+    };
   }
   draw() {
     // c.fillStyle = "red";
     // c.fillRect(this.position.x, this.position.y, this.width, this.height);
-    c.drawImage(this.image, this.position.x, this.position.y);
+    if (this.image) {
+      c.drawImage(
+        this.image,
+        this.position.x,
+        this.position.y,
+        this.width,
+        this.height
+      );
+    }
   }
 }
 
@@ -35,6 +44,8 @@ player.draw();
 
 function animate() {
   requestAnimationFrame(animate);
+  c.fillStyle = "black";
+  c.fillRect(0, 0, canvas.width, canvas.height);
   player.draw();
 }
 
