@@ -141,6 +141,8 @@ class Grid {
     const rows = Math.floor(Math.random() * 5 + 2);
     const columns = Math.floor(Math.random() * 10 + 5);
 
+    this.width = columns * 30;
+
     for (let i = 0; i < columns; i++) {
       for (let y = 0; y < rows; y++) {
         this.invaders.push(
@@ -157,6 +159,10 @@ class Grid {
   update() {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+
+    if (this.position.x + this.width >= canvas.width || this.position.x <= 0) {
+      this.velocity.x = -this.velocity.x;
+    }
   }
 }
 
