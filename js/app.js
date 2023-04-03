@@ -66,7 +66,7 @@ class Projectile {
     this.position = position;
     this.velocity = velocity;
 
-    this.radius = 3;
+    this.radius = 4;
   }
 
   draw() {
@@ -206,8 +206,35 @@ function animate() {
 
   grids.forEach((grid) => {
     grid.update();
-    grid.invaders.forEach((invader) => {
+    grid.invaders.forEach((invader, i) => {
       invader.update({ velocity: grid.velocity });
+
+      projectils.forEach((projectile, j) => {
+        if (
+          projectile.position.y - projectile.radius <=
+            invader.position.y + invader.height &&
+          projectile.position.x + projectile.radius >= invader.position.x &&
+          projectile.position.x - projectile.radius <=
+            invader.position.x + invader.width &&
+          projectile.position.y + projectile.radius >= invader.position.y
+        ) {
+          setTimeout(() => {
+            const invaderFound = grid.invaders.find((invader2) => {
+              return invader2 === invader;
+            });
+
+            // ERROR:
+            const projectileFound = projectils.find((projectile2) => {
+              projectile2 === projectile;
+            });
+
+            if (invaderFound) {
+              grid.invaders.splice(i, 1);
+              projectils.splice(j, 1);
+            }
+          }, 0);
+        }
+      });
     });
   });
 
@@ -229,6 +256,7 @@ function animate() {
     grids.push(new Grid());
     randomInterval = Math.floor(Math.random() * 500 + 500);
     frames = 0;
+    console.log(randomInterval);
   }
 
   frames++;
